@@ -1,0 +1,12 @@
+# Ignore JSON files
+*.json
+
+# Ignore ONNX model files
+*.onnx
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
