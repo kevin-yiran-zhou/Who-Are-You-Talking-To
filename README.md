@@ -1,5 +1,7 @@
 # Who-Are-You-Talking-To
 
+![System Overview](hri_system.png)
+
 ## Setup
 
 Download the Piper voice model:
