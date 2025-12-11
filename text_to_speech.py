@@ -10,13 +10,6 @@ from pathlib import Path
 
 class TextToSpeech:
     def __init__(self, voice_model: str = "en_US-lessac-medium", rate: float = 1.0, volume: float = 1.0):
-        """Initialize threaded Text-to-Speech using Piper.
-        
-        Args:
-            voice_model: Name of the Piper voice model (e.g., "en_US-lessac-medium")
-            rate: Speech rate multiplier (1.0 = normal, higher = faster)
-            volume: Volume level (0.0 to 1.0)
-        """
         self.queue = queue.Queue()
         self.voice_model = voice_model
         self.rate = rate
@@ -44,7 +37,6 @@ class TextToSpeech:
         self.text_buffer = ""
     
     def _find_voice_model(self) -> Path:
-        """Find the voice model file (.onnx file)."""
         # Check common locations for the .onnx file
         possible_paths = [
             Path(f"{self.voice_model}.onnx"),
@@ -60,7 +52,6 @@ class TextToSpeech:
         return None
 
     def _worker(self):
-        """The background worker that actually speaks."""
         while True:
             # Wait for text to arrive in the queue
             text = self.queue.get()
@@ -85,7 +76,6 @@ class TextToSpeech:
                 self.queue.task_done()
     
     def _speak_with_piper(self, text: str):
-        """Generate and play audio using Piper."""
         # Create temporary WAV file
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp_file:
             wav_path = tmp_file.name
@@ -142,11 +132,9 @@ class TextToSpeech:
                 pass
 
     def speak(self, text: str):
-        """Add text to the queue (Non-blocking)."""
         self.queue.put(text)
 
     def speak_streaming(self, text_chunk: str):
-        """Accumulate text and speak complete sentences."""
         if self.stop_flag: return
         
         self.text_buffer += text_chunk
@@ -167,13 +155,11 @@ class TextToSpeech:
             self.text_buffer = ""
 
     def flush(self):
-        """Speak whatever is left in the buffer."""
         if self.text_buffer.strip():
             self.speak(self.text_buffer.strip())
             self.text_buffer = ""
     
     def is_speaking(self):
-        """Check if the robot is currently talking or in cooldown period."""
         with self._speaking_lock:
             # Check if currently speaking (engine running)
             if self._is_speaking:

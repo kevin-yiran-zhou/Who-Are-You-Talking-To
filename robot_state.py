@@ -23,14 +23,12 @@ class RobotState:
         self.max_display_messages = 2  # Maximum number of messages to keep
 
     def stop(self):
-        """Signal all threads to shut down."""
         self.stop_event.set()
         
     def should_continue(self):
         return not self.stop_event.is_set()
     
     def add_display_message(self, message: str):
-        """Add a message to the display list (thread-safe)."""
         with self.display_lock:
             self.display_messages.append(message)
             # Keep only the most recent messages
@@ -38,6 +36,5 @@ class RobotState:
                 self.display_messages.pop(0)
     
     def get_display_messages(self):
-        """Get a copy of the display messages (thread-safe)."""
         with self.display_lock:
             return self.display_messages.copy()

@@ -50,10 +50,6 @@ class GazeDetector:
         return math.sqrt(((p1[0] - p2[0]) ** 2) + ((p1[1] - p2[1]) ** 2))
 
     def process_frame(self):
-        """
-        Captures one frame, processes gaze, and returns the frame and a boolean status.
-        Returns: (frame, is_someone_looking)
-        """
         if not self.cap.isOpened():
             return None, False
 

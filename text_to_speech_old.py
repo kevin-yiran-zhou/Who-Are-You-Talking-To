@@ -4,12 +4,6 @@ import pyttsx3
 
 class TextToSpeech:
     def __init__(self, rate: int = 150, volume: float = 0.9):
-        """Initialize the text-to-speech system using pyttsx3 (offline).
-        
-        Args:
-            rate: Speed of speech (words per minute)
-            volume: Volume level (0.0 to 1.0)
-        """
         self.engine = pyttsx3.init()
         
         # Set to English (America) voice
@@ -39,7 +33,6 @@ class TextToSpeech:
         self.stop_flag = False
     
     def speak(self, text: str):
-        """Speak text immediately (blocks until done)."""
         if not text.strip() or self.stop_flag:
             return
         
@@ -49,14 +42,6 @@ class TextToSpeech:
         self.speaking = False
     
     def speak_streaming(self, text_chunk: str):
-        """Add a text chunk to the buffer and speak complete sentences.
-        
-        This is designed to work with streaming LLM output - it accumulates
-        text until it finds sentence boundaries, then speaks them.
-        
-        Args:
-            text_chunk: A chunk of text from the streaming output
-        """
         if self.stop_flag:
             return
         
@@ -83,7 +68,6 @@ class TextToSpeech:
             self.text_buffer = ""
     
     def flush(self):
-        """Speak any remaining text in the buffer."""
         if self.text_buffer.strip():
             self.speaking = True
             self.speak(self.text_buffer.strip())
@@ -91,7 +75,6 @@ class TextToSpeech:
             self.text_buffer = ""
     
     def stop(self):
-        """Stop any ongoing speech."""
         self.stop_flag = True
         self.text_buffer = ""
         try:

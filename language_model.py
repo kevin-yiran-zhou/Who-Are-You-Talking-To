@@ -6,12 +6,6 @@ from typing import Optional, Callable
 
 class LanguageModel:
     def __init__(self, model_name: str = "Qwen/Qwen3-4B-Instruct-2507-FP8", verbose: bool = True):
-        """Initialize the language model.
-        
-        Args:
-            model_name: Name of the model to load
-            verbose: Whether to print loading messages
-        """
         if verbose:
             print("Loading model...")
         
@@ -36,16 +30,6 @@ class LanguageModel:
     
     def generate(self, user_input: str, max_new_tokens: int = 200, 
                  stream_callback: Optional[Callable[[str], None]] = None) -> str:
-        """Generate a response to user input.
-        
-        Args:
-            user_input: The user's input text
-            max_new_tokens: Maximum number of tokens to generate (default: 150, enough for 1-3 sentences)
-            stream_callback: Optional callback function called with each token as it's generated
-            
-        Returns:
-            The generated response text
-        """
         if not user_input.strip():
             return ""
         
@@ -89,7 +73,6 @@ class LanguageModel:
         return content
     
     def reset(self):
-        """Reset the conversation history (but keep the system message)."""
         # Reset to just the system message
         self.messages = [{
             "role": "system",
@@ -97,11 +80,9 @@ class LanguageModel:
         }]
     
     def get_history(self):
-        """Get the current conversation history."""
         return self.messages.copy()
     
     def run_interactive(self):
-        """Run an interactive command-line chat session."""
         print("Type 'quit' or 'exit' to end the conversation.\n")
         
         while True:
